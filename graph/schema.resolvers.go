@@ -6,7 +6,6 @@ package graph
 
 import (
 	"context"
-	"fmt"
 	"github.com/google/uuid"
 	"social_network_wall/graph/model"
 	"time"
@@ -100,29 +99,3 @@ func (r *Resolver) Subscription() SubscriptionResolver { return &subscriptionRes
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
 type subscriptionResolver struct{ *Resolver }
-
-func (r *Resolver) getPostById(ctx context.Context, postId string) (*model.Post, error) {
-	for _, post := range r.posts {
-		if post.PostID == postId {
-			return post, nil
-		}
-	}
-
-	return nil, fmt.Errorf("post not found")
-}
-
-func (r *Resolver) GetPostWithComments(ctx context.Context, postID string) (*model.PostWithComments, error) {
-	post, err := r.getPostById(ctx, postID)
-	if err != nil {
-		return nil, err
-	}
-
-	comments := r.comments[postID]
-
-	postWithComments := &model.PostWithComments{
-		Post:     post,
-		Comments: comments,
-	}
-
-	return postWithComments, nil
-}

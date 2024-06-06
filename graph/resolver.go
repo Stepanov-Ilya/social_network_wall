@@ -2,7 +2,11 @@
 
 package graph
 
-import "social_network_wall/graph/model"
+import (
+	"context"
+	"fmt"
+	"social_network_wall/graph/model"
+)
 
 // This file will not be regenerated automatically.
 //
@@ -19,4 +23,30 @@ func newResolver() *Resolver {
 		posts:    []*model.Post{},
 		comments: map[string][]*model.Comment{},
 	}
+}
+
+func (r *Resolver) getPostById(ctx context.Context, postId string) (*model.Post, error) {
+	for _, post := range r.posts {
+		if post.PostID == postId {
+			return post, nil
+		}
+	}
+
+	return nil, fmt.Errorf("post not found")
+}
+
+func (r *Resolver) GetPostWithComments(ctx context.Context, postID string) (*model.PostWithComments, error) {
+	post, err := r.getPostById(ctx, postID)
+	if err != nil {
+		return nil, err
+	}
+
+	comments := r.comments[postID]
+
+	postWithComments := &model.PostWithComments{
+		Post:     post,
+		Comments: comments,
+	}
+
+	return postWithComments, nil
 }
