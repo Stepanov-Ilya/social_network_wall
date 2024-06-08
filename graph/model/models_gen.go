@@ -9,13 +9,10 @@ import (
 type Comment struct {
 	CommentID          string     `json:"commentId"`
 	PostID             string     `json:"postId"`
-	ParentCommentID    *string    `json:"parentCommentId,omitempty"`
+	ParentCommentID    *string    `json:"parentCommentId"`
 	ChildrenCommentsID []*Comment `json:"childrenCommentsId"`
 	Content            string     `json:"content"`
 	CreatedAt          time.Time  `json:"createdAt"`
-}
-
-type Mutation struct {
 }
 
 type Post struct {
@@ -25,10 +22,4 @@ type Post struct {
 	CreatedAt       time.Time  `json:"createdAt"`
 	CommentsEnabled bool       `json:"commentsEnabled"`
 	Comments        []*Comment `json:"comments"`
-}
-
-type Query struct {
-}
-
-type Subscription struct {
 }
